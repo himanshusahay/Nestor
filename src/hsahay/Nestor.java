@@ -56,17 +56,17 @@ public class Nestor extends Solitaire {
 			}
 				
 		// Reserve cards
-				for (int i=0; i<1; i++)
+		//alternative could be, while deck is not empty, deal cards to reserve and then at last iteration, make card faceup
+				for (int i=0; i<3; i++)
 				{
 					Card c = deck.get();
 					
 					c.setFaceUp(false);
-					reserve.add (deck.get());
+					reserve.add (c);
 				}
-				// this card is faceup in initially
+				// this card is faceup initially
 				reserve.add (deck.get());
-					
-	
+						
 	}
 
 	private void initializeControllers() {
@@ -123,7 +123,7 @@ public class Nestor extends Solitaire {
 	public static void main (String []args) {
 		// Seed is to ensure we get the same initial cards every time.
 		// Here the seed is to "order by suit."
-		Main.generateWindow(new Nestor(), Deck.OrderBySuit);
+		Main.generateWindow(new Nestor(), -3);
 	}
 
 }
