@@ -1,6 +1,8 @@
 package hsahay;
 
+import ks.common.controller.SolitaireMouseMotionAdapter;
 import ks.common.games.Solitaire;
+import ks.common.games.SolitaireUndoAdapter;
 import ks.common.model.BuildablePile;
 import ks.common.model.Card;
 import ks.common.model.Column;
@@ -17,7 +19,6 @@ public class Nestor extends Solitaire {
 	Column[] column = new Column[8];
 	BuildablePile reserve;
 	
-//	DeckView deckView;
 	ColumnView[] columnView = new ColumnView[8];
 	BuildablePileView reserveView;
 	IntegerView scoreView;
@@ -71,16 +72,23 @@ public class Nestor extends Solitaire {
 
 	private void initializeControllers() {
 		// TODO Auto-generated method stub
+		// Now for each BuildablePile.
+				for (int i = 0; i <= 7; i++) {
+					columnView[i].setMouseAdapter (new NestorColumnController (this, columnView[i]));
+					columnView[i].setMouseMotionAdapter (new SolitaireMouseMotionAdapter (this));
+					columnView[i].setUndoAdapter (new SolitaireUndoAdapter(this));
+				}
 		
+				reserveView.setMouseAdapter (new NestorBuildablePileController (this, reserveView));
+				reserveView.setMouseMotionAdapter (new SolitaireMouseMotionAdapter (this));
+				reserveView.setUndoAdapter (new SolitaireUndoAdapter(this));
+				
+			//Add mouse adapters for scoreView	
 	}
 
 	private void initializeView() {
-		// TODO Auto-generated method stub
+
 		CardImages ci = getCardImages();
-		
-//		deckView = new DeckView (deck);
-//		deckView.setBounds (20,0, ci.getWidth(), ci.getHeight());
-//		container.addWidget (deckView);
 
 		// create ColumnViews, one after the other with 6 cards in each column
 		for (int colNum = 1; colNum <=8; colNum++) {
