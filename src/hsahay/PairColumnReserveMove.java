@@ -1,6 +1,7 @@
 package hsahay;
 
 import ks.common.games.Solitaire;
+import ks.common.model.BuildablePile;
 import ks.common.model.Card;
 import ks.common.model.Column;
 import ks.common.model.Move;
@@ -13,15 +14,15 @@ import ks.common.model.Stack;
 	 */
 
 
-public class PairColumnsMove extends Move {
+public class PairColumnReserveMove extends Move {
 
 	Column from;
-	Column to;
+	BuildablePile to;
 	Card cardBeingDragged;
 	Stack stack;
 	
 	
-	public PairColumnsMove(Column from, Column to, Card cardBeingDragged) {
+	public PairColumnReserveMove(Column from, BuildablePile to, Card cardBeingDragged) {
 		this.from = from;
 		this.cardBeingDragged = cardBeingDragged;
 		this.to = to;
@@ -55,10 +56,10 @@ public class PairColumnsMove extends Move {
 
 	@Override
 	public boolean valid(Solitaire game) {
-		if(to.empty()){
-			return false;
-		}
-		
+//		if(!(from.empty())){
+//			return false;
+//		}
+//		
 		int toCardRank = to.rank();
 		//Rank of card which in the 'to' column which will be paired with the cardBeingDragged
 		

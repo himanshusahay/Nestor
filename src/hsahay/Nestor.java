@@ -109,7 +109,7 @@ public class Nestor extends Solitaire {
 		
 		updateScore(0);
 				
-	}
+	} 
 
 	private void initializeModel(int seed) {
 		deck = new Deck("deck");
@@ -131,7 +131,13 @@ public class Nestor extends Solitaire {
 	public static void main (String []args) {
 		// Seed is to ensure we get the same initial cards every time.
 		// Here the seed is to "order by suit."
-		Main.generateWindow(new Nestor(), -3);
+		Main.generateWindow(new Nestor(), randomNum(-8,8));
+	}
+	
+	public static int randomNum(int min, int max)
+	{
+	   int range = (max - min) + 1;     
+	   return (int)(Math.random() * range) + min;
 	}
 
 }

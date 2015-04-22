@@ -1,6 +1,7 @@
 package hsahay;
 
 import ks.common.games.Solitaire;
+import ks.common.model.BuildablePile;
 import ks.common.model.Card;
 import ks.common.model.Column;
 import ks.common.model.Move;
@@ -13,20 +14,19 @@ import ks.common.model.Stack;
 	 */
 
 
-public class PairColumnsMove extends Move {
+public class PairReserveColumnMove extends Move {
 
-	Column from;
+	BuildablePile from;
 	Column to;
 	Card cardBeingDragged;
 	Stack stack;
 	
 	
-	public PairColumnsMove(Column from, Column to, Card cardBeingDragged) {
+	public PairReserveColumnMove(BuildablePile from, Column to, Card cardBeingDragged) {
 		this.from = from;
 		this.cardBeingDragged = cardBeingDragged;
 		this.to = to;
 		this.stack = new Stack();
-
 	}
 	
 	@Override
@@ -55,7 +55,7 @@ public class PairColumnsMove extends Move {
 
 	@Override
 	public boolean valid(Solitaire game) {
-		if(to.empty()){
+		if((to.empty())){
 			return false;
 		}
 		
