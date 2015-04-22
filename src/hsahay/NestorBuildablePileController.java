@@ -3,7 +3,6 @@ package hsahay;
 import java.awt.event.MouseEvent;
 
 import ks.common.controller.SolitaireReleasedAdapter;
-import ks.common.games.Solitaire;
 import ks.common.model.BuildablePile;
 import ks.common.model.Card;
 import ks.common.model.Column;
@@ -47,7 +46,7 @@ public class NestorBuildablePileController extends SolitaireReleasedAdapter {
 			CardView cardView = columnView.getCardViewForTopCard (me);
 			
 			// an invalid selection of some sort.
-			if (cardView == null) {
+			if (cardView == null || columnView == null) {
 				c.releaseDraggingObject();
 				return;
 			}
@@ -66,12 +65,8 @@ public class NestorBuildablePileController extends SolitaireReleasedAdapter {
 			
 			// Tell container which source widget initiated the drag
 			c.setDragSource (src);
-		
-			// The only widget that could have changed is ourselves. If we called refresh, there
-			// would be a flicker, because the dragged widget would not be redrawn. We simply
-			// force the Column's image to be updated, but nothing is refreshed on the screen.
-			// This is patently OK because the card has not yet been dragged away to reveal the
-			// card beneath it.  A bit tricky and I like it!
+
+			
 			src.redraw();
 	}
 
@@ -81,6 +76,8 @@ public class NestorBuildablePileController extends SolitaireReleasedAdapter {
 	 */
 	public void mouseReleased(MouseEvent me) {
 		Container c = theGame.getContainer();
+		ColumnView columnView = src.getColumnView(me);
+		
 		
 		/** Return if there is no card being dragged chosen. */
 		Widget draggingWidget = c.getActiveDraggingObject();
@@ -90,26 +87,43 @@ public class NestorBuildablePileController extends SolitaireReleasedAdapter {
 			return;
 		}
 
-		/** Recover the from BuildablePile */
+		
+		/** Recover the from Column or BuildablePile */
 		Widget fromWidget = c.getDragSource();
 		if (fromWidget == null) {
 			System.err.println ("NestorBuildablePileController::mouseReleased(): somehow no dragSource in container.");
 			c.releaseDraggingObject();
 			return;
 		}
+		
+	
+		//Normal case when pair made from Column to Reserve
+		if(fromWidget.getModelElement() instanceof Column) {
+			Column from = (Column) fromWidget.getModelElement();
+			// Determine the To BuildablePile
+			BuildablePile to = (BuildablePile) src.getModelElement();
+			
+			CardView cardView = (CardView) draggingWidget;
+			Card theCard = (Card) cardView.getModelElement();
+			
+			Move move = new PairColumnReserveMove(from, to, theCard);
+			if (move.doMove(theGame)) {
+				theGame.pushMove (move);     // Successful Move has been made
+				theGame.refreshWidgets();
+			} else {
+				fromWidget.returnWidget (columnView);
+			}
+			
+			//flip the top card on the reserve BuildablePileView after the previous top card is used
+			if(!(to.empty())){
+				to.flipCard();
+			}
 
-		Column from = (Column) fromWidget.getModelElement();
-		// Determine the To BuildablePile
-		BuildablePile to = (BuildablePile) src.getModelElement();
+		}
 		
-		CardView cardView = (CardView) draggingWidget;
-		Card theCard = (Card) cardView.getModelElement();
-		
-		Move move = new PairColumnReserveMove(from, to, theCard);
-		if (move.doMove(theGame)) {
-			theGame.pushMove (move);     // Successful Move has been Move
-		} else {
-			fromWidget.returnWidget (draggingWidget);
+//!!!!!When card (columnView) dragged from BuildablePile to random space on board and released. Should go back to the BuildablePile.
+		else if(fromWidget.getModelElement() instanceof BuildablePile) {
+			//release the columnView being dragged and cancel the drag?
 		}
 		
 		// release the dragging object, (this will reset dragSource)
@@ -118,6 +132,5 @@ public class NestorBuildablePileController extends SolitaireReleasedAdapter {
 		// finally repaint
 		c.repaint();
 	}
-
 
 }

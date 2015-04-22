@@ -1,6 +1,7 @@
 package hsahay;
 
 import ks.common.controller.SolitaireMouseMotionAdapter;
+import ks.common.controller.SolitaireReleasedAdapter;
 import ks.common.games.Solitaire;
 import ks.common.games.SolitaireUndoAdapter;
 import ks.common.model.BuildablePile;
@@ -83,7 +84,11 @@ public class Nestor extends Solitaire {
 				reserveView.setMouseMotionAdapter (new SolitaireMouseMotionAdapter (this));
 				reserveView.setUndoAdapter (new SolitaireUndoAdapter(this));
 				
-			//Add mouse adapters for scoreView	
+				// same for scoreView
+				scoreView.setMouseMotionAdapter (new SolitaireMouseMotionAdapter(this));
+				scoreView.setMouseAdapter (new SolitaireReleasedAdapter(this));
+				scoreView.setUndoAdapter (new SolitaireUndoAdapter(this));
+
 	}
 
 	private void initializeView() {
