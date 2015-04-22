@@ -3,6 +3,7 @@ package hsahay;
 import java.awt.event.MouseEvent;
 
 import ks.common.controller.SolitaireReleasedAdapter;
+import ks.common.model.BuildablePile;
 import ks.common.model.Card;
 import ks.common.model.Column;
 import ks.common.model.Move;
@@ -90,7 +91,7 @@ public class NestorColumnController extends SolitaireReleasedAdapter {
 			return;
 		}
 
-		/** Recover the from BuildablePile OR waste Pile */
+		/** Recover the from BuildablePile */
 		Widget fromWidget = c.getDragSource();
 		if (fromWidget == null) {
 			System.err.println ("NestorColumnController::mouseReleased(): somehow no dragSource in container.");
@@ -98,18 +99,49 @@ public class NestorColumnController extends SolitaireReleasedAdapter {
 			return;
 		}
 
-		Column from = (Column) fromWidget.getModelElement();
-		// Determine the To Pile
-		Column to = (Column) src.getModelElement();
+		if(fromWidget.getModelElement() instanceof Column){
+			Column from = (Column) fromWidget.getModelElement();
+			
+			// Determine the To Pile
+			Column to = (Column) src.getModelElement();
+			
+			CardView cardView = (CardView) draggingWidget;
+			Card theCard = (Card) cardView.getModelElement();
+			
+			Move move = new PairColumnsMove(from, to, theCard);
 		
-		CardView cardView = (CardView) draggingWidget;
-		Card theCard = (Card) cardView.getModelElement();
-		
-		Move move = new PairColumnsMove(from, to, theCard);
-		if (move.doMove(theGame)) {
-			theGame.pushMove (move);     // Successful Move has been Move
-		} else {
-			fromWidget.returnWidget (draggingWidget);
+			if (move.doMove(theGame)) {
+				theGame.pushMove (move);     // Successful Move has been made
+				theGame.refreshWidgets();
+			} else {
+				fromWidget.returnWidget (draggingWidget);
+			}
+		}
+		else if(fromWidget.getModelElement() instanceof BuildablePile){
+			BuildablePile from = (BuildablePile) fromWidget.getModelElement();
+			
+			// Determine the To Pile
+			Column to = (Column) src.getModelElement();
+			
+			CardView cardView = (CardView) draggingWidget;
+			Card theCard = (Card) cardView.getModelElement();
+			
+			Move move = new PairReserveColumnMove(from, to, theCard);
+			
+			if (move.doMove(theGame)) {
+				theGame.pushMove (move);     // Successful Move has been made
+				theGame.refreshWidgets();
+			} else {
+				fromWidget.returnWidget (draggingWidget);
+			}
+			
+			//flip the top card on the reserve BuildablePileView after the previous top card is used
+			if(!(from.empty())){
+				from.flipCard();
+			}
+		}
+		else{
+			throw new NullPointerException("Not being dragged from anything. If this case is reached, something in wrong.");
 		}
 		
 		// release the dragging object, (this will reset dragSource)
