@@ -1,5 +1,7 @@
 package hsahay;
 
+import java.util.ArrayList;
+
 import ks.common.controller.SolitaireMouseMotionAdapter;
 import ks.common.controller.SolitaireReleasedAdapter;
 import ks.common.games.Solitaire;
@@ -46,16 +48,48 @@ public class Nestor extends Solitaire {
 		 * with one face up card with no overlap on it
 		 */
 		for (int colNum=0; colNum <=7; colNum++) {
-			//5 inner cards per column
-			for(int i=1; i<=5; i++)
-			{
-				Card c = deck.get();
-				c.setFaceUp (true);
-				column[colNum].add (c);
-			}											
-			// This one is the top card
-			column[colNum].add (deck.get());
-			}
+			
+			ArrayList<Card> c = new ArrayList<Card>();
+			ArrayList<Integer> cardRanks = new ArrayList<Integer>();
+			int i = 0;
+			//First inside card
+			c.add(deck.get());
+			//Add rank of first card to ArrayList of card ranks
+			cardRanks.add((c.get(i).getRank()));
+			c.get(i).setFaceUp (true);
+			column[colNum].add (c.get(i));
+			
+			ArrayList<Card> cardsAtDeckBottom = new ArrayList<Card>();
+			
+//			//next 5 cards leading to the top card
+			while(c.size()!=6)	{
+			
+				Card nextCard = deck.get();
+//				if(nextCard == null){
+//					while (!(cardsAtDeckBottom.isEmpty())){
+//						deck.add(cardsAtDeckBottom.remove(0));
+//					}
+//					nextCard = deck.get();
+//				}
+					
+				boolean nextCardUsed = false;
+//				Integer tempRank = nextCard.getRank();
+//				if (!(cardRanks.contains(tempRank))){		
+					c.add(nextCard);
+					nextCardUsed = true;
+					i+=1;
+				 	c.get(i).setFaceUp (true);
+					column[colNum].add (c.get(i));
+//				}
+//				else{
+//					cardsAtDeckBottom.add(0, nextCard);
+//				}
+//				if(nextCardUsed == false){
+//					
+//				}
+				
+			}								
+		}
 				
 		// Reserve cards
 		//alternative could be, while deck is not empty, deal cards to reserve and then at last iteration, make card faceup
@@ -94,7 +128,7 @@ public class Nestor extends Solitaire {
 	private void initializeView() {
 
 		CardImages ci = getCardImages();
-
+		
 		// create ColumnViews, one after the other with 6 cards in each column
 		for (int colNum = 1; colNum <=8; colNum++) {
 			columnView[colNum-1] = new ColumnView (column[colNum-1]);

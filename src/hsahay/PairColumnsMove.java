@@ -50,6 +50,7 @@ public class PairColumnsMove extends Move {
 		to.add(toCard);
 		Card fromCard = stack.get();
 		from.add(fromCard);
+		game.updateScore(-2);
 		return true;
 	}
 

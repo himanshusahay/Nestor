@@ -39,6 +39,11 @@ public class PairReserveColumnMove extends Move {
 			stack.add(toCard);
 			game.updateScore(+2);
 			
+			//flip the top card on the reserve BuildablePileView after the previous top card is used
+			if(!(from.empty())){
+				from.flipCard();
+			}
+			
 			return true;
 		
 	}
@@ -50,6 +55,7 @@ public class PairReserveColumnMove extends Move {
 		to.add(toCard);
 		Card fromCard = stack.get();
 		from.add(fromCard);
+		game.updateScore(-2);
 		return true;
 	}
 

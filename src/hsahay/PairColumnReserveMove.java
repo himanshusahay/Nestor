@@ -40,6 +40,11 @@ public class PairColumnReserveMove extends Move {
 			stack.add(toCard);
 			game.updateScore(+2);
 			
+			//flip the top card on the reserve BuildablePileView after the previous top card is used
+			if(!(to.empty())) {
+			to.flipCard();
+			}
+			
 			return true;
 		
 	}
@@ -51,23 +56,23 @@ public class PairColumnReserveMove extends Move {
 		to.add(toCard);
 		Card fromCard = stack.get();
 		from.add(fromCard);
+		game.updateScore(-2);
 		return true;
 	}
 
 	@Override
 	public boolean valid(Solitaire game) {
-//		if(!(from.empty())){
-//			return false;
-//		}
-//		
-		int toCardRank = to.rank();
-		//Rank of card which in the 'to' column which will be paired with the cardBeingDragged
+		if(to.empty()) {
+			return false;
+		}
 		
+		int toCardRank = to.rank();
+		
+		//Rank of card which in the 'to' BuildablePile which will be paired with the cardBeingDragged
 		if(cardBeingDragged.getRank() == toCardRank) {
 			return true;
 		}
-	
-		
+			
 		//not a match!
 		return false;
 		

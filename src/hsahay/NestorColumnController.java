@@ -91,7 +91,7 @@ public class NestorColumnController extends SolitaireReleasedAdapter {
 			return;
 		}
 
-		/** Recover the from BuildablePile */
+		/** Recover the from BuildablePile/Column */
 		Widget fromWidget = c.getDragSource();
 		if (fromWidget == null) {
 			System.err.println ("NestorColumnController::mouseReleased(): somehow no dragSource in container.");
@@ -112,7 +112,6 @@ public class NestorColumnController extends SolitaireReleasedAdapter {
 		
 			if (move.doMove(theGame)) {
 				theGame.pushMove (move);     // Successful Move has been made
-				theGame.refreshWidgets();
 			} else {
 				fromWidget.returnWidget (draggingWidget);
 			}
@@ -123,22 +122,22 @@ public class NestorColumnController extends SolitaireReleasedAdapter {
 			// Determine the To Pile
 			Column to = (Column) src.getModelElement();
 			
-			CardView cardView = (CardView) draggingWidget;
-			Card theCard = (Card) cardView.getModelElement();
+//			CardView cardView = (CardView) draggingWidget;
+//			Card theCard = (Card) cardView.getModelElement();
+			
+			ColumnView columnView = (ColumnView) draggingWidget;
+			Column column = (Column) columnView.getModelElement();
+			Card theCard = column.peek();
 			
 			Move move = new PairReserveColumnMove(from, to, theCard);
 			
 			if (move.doMove(theGame)) {
 				theGame.pushMove (move);     // Successful Move has been made
-				theGame.refreshWidgets();
+				
 			} else {
 				fromWidget.returnWidget (draggingWidget);
 			}
 			
-			//flip the top card on the reserve BuildablePileView after the previous top card is used
-			if(!(from.empty())){
-				from.flipCard();
-			}
 		}
 		else{
 			throw new NullPointerException("Not being dragged from anything. If this case is reached, something in wrong.");

@@ -43,10 +43,10 @@ public class NestorBuildablePileController extends SolitaireReleasedAdapter {
 			// Get a card to move from ColumnView. Note: this returns a CardView.
 			// Note that this method will alter the model for BuildablePileView if the condition is met.
 			ColumnView columnView = src.getColumnView(me);
-			CardView cardView = columnView.getCardViewForTopCard (me);
+//			CardView cardView = columnView.getCardViewForTopCard (me);
 			
 			// an invalid selection of some sort.
-			if (cardView == null || columnView == null) {
+			if (columnView == null) {
 				c.releaseDraggingObject();
 				return;
 			}
@@ -61,7 +61,7 @@ public class NestorBuildablePileController extends SolitaireReleasedAdapter {
 			}
 		
 			// Tell container which object is being dragged, and where in that widget the user clicked.
-			c.setActiveDraggingObject (cardView, me);
+			c.setActiveDraggingObject (columnView, me);
 			
 			// Tell container which source widget initiated the drag
 			c.setDragSource (src);
@@ -76,8 +76,6 @@ public class NestorBuildablePileController extends SolitaireReleasedAdapter {
 	 */
 	public void mouseReleased(MouseEvent me) {
 		Container c = theGame.getContainer();
-		ColumnView columnView = src.getColumnView(me);
-		
 		
 		/** Return if there is no card being dragged chosen. */
 		Widget draggingWidget = c.getActiveDraggingObject();
@@ -109,21 +107,17 @@ public class NestorBuildablePileController extends SolitaireReleasedAdapter {
 			Move move = new PairColumnReserveMove(from, to, theCard);
 			if (move.doMove(theGame)) {
 				theGame.pushMove (move);     // Successful Move has been made
-				theGame.refreshWidgets();
-			} else {
-				fromWidget.returnWidget (columnView);
 			}
-			
-			//flip the top card on the reserve BuildablePileView after the previous top card is used
-			if(!(to.empty())){
-				to.flipCard();
+			else{
+				fromWidget.returnWidget(draggingWidget);
 			}
-
+		
 		}
 		
 //!!!!!When card (columnView) dragged from BuildablePile to random space on board and released. Should go back to the BuildablePile.
 		else if(fromWidget.getModelElement() instanceof BuildablePile) {
-			//release the columnView being dragged and cancel the drag?
+// Not working			
+			fromWidget.returnWidget (draggingWidget);
 		}
 		
 		// release the dragging object, (this will reset dragSource)
