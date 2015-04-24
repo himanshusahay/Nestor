@@ -44,6 +44,8 @@ public class PairReserveColumnMove extends Move {
 				from.flipCard();
 			}
 			
+			System.out.print(from.peek().toString());
+			
 			return true;
 		
 	}

@@ -43,7 +43,6 @@ public class NestorBuildablePileController extends SolitaireReleasedAdapter {
 			// Get a card to move from ColumnView. Note: this returns a CardView.
 			// Note that this method will alter the model for BuildablePileView if the condition is met.
 			ColumnView columnView = src.getColumnView(me);
-//			CardView cardView = columnView.getCardViewForTopCard (me);
 			
 			// an invalid selection of some sort.
 			if (columnView == null) {
@@ -53,7 +52,7 @@ public class NestorBuildablePileController extends SolitaireReleasedAdapter {
 			
 			// If we get here, then the user has indeed clicked on the top card in the ColumnView of the BuildblePileView and
 			// we are able to now move it on the screen at will. For smooth action, the bounds for the
-			// cardView widget reflect the original card location on the screen.
+			// columnView widget reflect the original card location on the screen.
 			Widget w = c.getActiveDraggingObject();
 			if (w != Container.getNothingBeingDragged()) {
 				System.err.println ("NestorBuildablePileController::mousePressed(): Unexpectedly encountered a Dragging Object during a Mouse press.");
@@ -114,9 +113,8 @@ public class NestorBuildablePileController extends SolitaireReleasedAdapter {
 		
 		}
 		
-//!!!!!When card (columnView) dragged from BuildablePile to random space on board and released. Should go back to the BuildablePile.
-		else if(fromWidget.getModelElement() instanceof BuildablePile) {
-// Not working			
+		//When card (columnView) dragged from BuildablePile to random space on board and released, it goes back to the BuildablePile.
+		else if(fromWidget.getModelElement() instanceof BuildablePile) {			
 			fromWidget.returnWidget (draggingWidget);
 		}
 		

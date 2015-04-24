@@ -137,7 +137,7 @@ public class Nestor extends Solitaire {
 		}
 		// create BuildablePileViews, one after the other 
 		reserveView = new BuildablePileView(reserve);
-		reserveView.setBounds (20, 30+(5*ci.getOverlap())+ci.getHeight(), ci.getWidth(), ci.getOverlap()*4+ci.getHeight());
+		reserveView.setBounds (20, 50+(5*ci.getOverlap())+ci.getHeight(), ci.getWidth(), ci.getOverlap()*4+ci.getHeight());
 		container.addWidget (reserveView);
 		
 		scoreView = new IntegerView (getScore());
@@ -160,7 +160,7 @@ public class Nestor extends Solitaire {
 		
 		// each of the columns appears here
 		for (int i = 0; i<8; i++) {
-			column[i] = new Column("column" + i);
+			column[i] = new Column("column" + i); 
 			model.addElement (column[i]);
 		} 
 		

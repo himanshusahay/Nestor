@@ -3,9 +3,7 @@ package hsahay;
 import java.awt.event.MouseEvent;
 
 import ks.client.gamefactory.GameWindow;
-import ks.common.model.Card;
 import ks.common.view.CardImages;
-import ks.common.view.CardView;
 import ks.launcher.Main;
 import ks.tests.KSTestCase;
 import ks.tests.model.ModelFactory;
@@ -45,7 +43,6 @@ public class TestNestor extends KSTestCase {
 		assertEquals(2, nestor.column[0].count());
 		assertEquals(2, nestor.column[1].count());
 		assertEquals(0, nestor.getScoreValue());
-		assertEquals(0, nestor.deck.count());
 		
 		PairColumnsMove pcm = new PairColumnsMove(nestor.column[0], nestor.column[1], nestor.column[0].get());
 		
@@ -75,7 +72,6 @@ public void testPairColumnReserveMove() {
 		assertEquals(2, nestor.column[0].count());
 		assertEquals(4, nestor.reserve.count());
 		assertEquals(0, nestor.getScoreValue());
-		assertEquals(0, nestor.deck.count());
 		
 		PairColumnReserveMove pcrm = new PairColumnReserveMove(nestor.column[0], nestor.reserve, nestor.column[0].get());
 		
@@ -105,7 +101,6 @@ public void testPairReserveColumnMove() {
 	assertEquals(4, nestor.reserve.count());
 	assertEquals(2, nestor.column[0].count());
 	assertEquals(0, nestor.getScoreValue());
-	assertEquals(0, nestor.deck.count());
 	
 	PairReserveColumnMove prcm = new PairReserveColumnMove(nestor.reserve, nestor.column[0], nestor.reserve.get());
 	
@@ -133,17 +128,18 @@ public void testPairReserveColumnMove() {
 		assertEquals(4, nestor.column[0].count());
 		assertEquals(4, nestor.column[1].count());
 		assertEquals(0, nestor.getScoreValue());
-		assertEquals(0, nestor.deck.count());
 		
 		assertEquals ("KH", nestor.column[0].peek().toString());
 		assertEquals ("KC", nestor.column[1].peek().toString());
 		
+		CardImages ci = nestor.getCardImages();
+		
 		//press to pick up card from first column
-		MouseEvent press = this.createPressed(nestor, nestor.columnView[0], 1, 66+80);
+		MouseEvent press = this.createPressed(nestor, nestor.columnView[0], 25, 3*ci.getOverlap()+ci.getHeight()-20);
 		nestor.columnView[0].getMouseManager().handleMouseEvent(press);
 		
 		// drop on the second column
-		MouseEvent release = this.createReleased(nestor, nestor.columnView[1], 100, 66+80);
+		MouseEvent release = this.createReleased(nestor, nestor.columnView[1], 25+10+ci.getWidth(), 3*ci.getOverlap()+ci.getHeight()-20);
 		nestor.columnView[1].getMouseManager().handleMouseEvent(release);
 
 		assertEquals (3, nestor.column[0].count());
@@ -160,23 +156,60 @@ public void testPairReserveColumnMove() {
 	}
 
 
-//	public void testBuildablePileController() {
-//		// first create a mouse event
-//		MouseEvent pr = createPressed (nestor, nestor.columnView[7], 0, 6*nestor.columnView[7].getHeight());
-//		nestor.columnView[7].getMouseManager().handleMouseEvent(pr);
-//		
-//		// drop on the first column
-//		MouseEvent rel = createReleased (nestor, nestor.columnView[1], 0, 0);
-//		nestor.columnView[1].getMouseManager().handleMouseEvent(rel);
-//
-//		assertEquals (2, nestor.column[1].count());
-//		
-////	assertFalse (nestor.column[7].peek().isFaceUp());
-//
-//		// go ahead and flip card by re-executing move
-////		nestor.columnView[7].getMouseManager().handleMouseEvent(pr);
-////		assertTrue (nestor.column[7].peek().isFaceUp());
-//
-//	}
+	public void testBuildablePileController() {
+		ModelFactory.init(nestor.reserve, "3H 4C 3C QH");
+		ModelFactory.init(nestor.column[0], "3D 3S 9H QD 2H QS");
+		
+		assertEquals(6, nestor.column[0].count());
+		assertEquals(4, nestor.reserve.count());
+		assertEquals(0, nestor.getScoreValue());
+		
+		assertEquals ("QS", nestor.column[0].peek().toString());
+		assertEquals ("QH", nestor.reserve.peek().toString());
+		
+		CardImages ci = nestor.getCardImages();
+		
+		// Pick up card from the column
+		MouseEvent press1 = createPressed (nestor, nestor.columnView[0], 25, 5*ci.getOverlap()+ci.getHeight()-20);
+		nestor.columnView[0].getMouseManager().handleMouseEvent(press1);		
+		
+		// Release on the reserve
+		MouseEvent release1 = this.createReleased(nestor, nestor.reserveView, 25, 5*ci.getOverlap()+ci.getHeight()+30+ci.getOverlap()*4+ci.getHeight());
+		nestor.reserveView.getMouseManager().handleMouseEvent(release1);
 
+		assertEquals (5, nestor.column[0].count());
+		assertEquals (3, nestor.reserve.count());
+		
+		assertEquals ("2H", nestor.column[0].peek().toString());
+		assertEquals ("[3C]", nestor.reserve.peek().toString());
+
+		assertTrue (nestor.undoMove());
+		assertEquals (6, nestor.column[0].count());
+		assertEquals (4, nestor.reserve.count());	
+		assertEquals ("QS", nestor.column[0].peek().toString());
+		assertEquals ("QH", nestor.reserve.peek().toString());
+
+//		// Pick up card from the column
+//		MouseEvent press2 = createPressed (nestor, nestor.reserveView, 25, 5*ci.getOverlap()+ci.getHeight()+ci.getOverlap()*4+ci.getHeight()+30);
+//		nestor.reserveView.getMouseManager().handleMouseEvent(press2);		 
+//		
+//		assertEquals ("QH", nestor.reserve.peek().toString());
+//			
+//		// Release on the reserve
+//		MouseEvent release2 = this.createReleased(nestor, nestor.columnView[0], 25, 5*ci.getOverlap()+ci.getHeight()-20);
+//		nestor.columnView[0].getMouseManager().handleMouseEvent(release2);
+//
+//		assertEquals (5, nestor.column[0].count());
+//		assertEquals (3, nestor.reserve.count());
+//		
+//		assertEquals ("2H", nestor.column[0].peek().toString());
+//		assertEquals ("[3C]", nestor.reserve.peek().toString());
+//
+//		assertTrue (nestor.undoMove());
+//		assertEquals (6, nestor.column[0].count());
+//		assertEquals (4, nestor.reserve.count());	
+//		assertEquals ("QS", nestor.column[0].peek().toString());
+//		assertEquals ("QH", nestor.reserve.peek().toString());
+
+	}
 }
