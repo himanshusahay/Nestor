@@ -180,27 +180,5 @@ public void testPairReserveColumnMove() {
 		assertEquals ("QS", nestor.column[0].peek().toString());
 		assertEquals ("QH", nestor.reserve.peek().toString());
 
-//		// Pick up card from the column
-//		MouseEvent press2 = createPressed (nestor, nestor.reserveView, 25, 5*ci.getOverlap()+ci.getHeight()+ci.getOverlap()*4+ci.getHeight()+30);
-//		nestor.reserveView.getMouseManager().handleMouseEvent(press2);		 
-//		
-//		assertEquals ("QH", nestor.reserve.peek().toString());
-//			
-//		// Release on the reserve
-//		MouseEvent release2 = this.createReleased(nestor, nestor.columnView[0], 25, 5*ci.getOverlap()+ci.getHeight()-20);
-//		nestor.columnView[0].getMouseManager().handleMouseEvent(release2);
-//
-//		assertEquals (5, nestor.column[0].count());
-//		assertEquals (3, nestor.reserve.count());
-//		
-//		assertEquals ("2H", nestor.column[0].peek().toString());
-//		assertEquals ("[3C]", nestor.reserve.peek().toString());
-//
-//		assertTrue (nestor.undoMove());
-//		assertEquals (6, nestor.column[0].count());
-//		assertEquals (4, nestor.reserve.count());	
-//		assertEquals ("QS", nestor.column[0].peek().toString());
-//		assertEquals ("QH", nestor.reserve.peek().toString());
-
 	}
 }
