@@ -48,8 +48,6 @@ public class Nestor extends Solitaire {
 		 * with one face up card with no overlap on it
 		 */
 		
-//		ArrayList<Integer> cardRanksReserve = new ArrayList<Integer>();
-//		
 		ArrayList<Integer> cardRanks0 = new ArrayList<Integer>();
 		ArrayList<Integer> cardRanks1 = new ArrayList<Integer>();
 		ArrayList<Integer> cardRanks2 = new ArrayList<Integer>();
@@ -138,62 +136,17 @@ public class Nestor extends Solitaire {
 				extras.add(deck.get());
 			}
 		}
-
-		
-//		for (int colNum=0; colNum <=7; colNum++) {
-//			
-//			ArrayList<Card> c = new ArrayList<Card>();
-//			ArrayList<Integer> cardRanks = new ArrayList<Integer>();
-//			int i = 0;
-//			//First inside card
-//			c.add(deck.get());
-//			//Add rank of first card to ArrayList of card ranks
-//			cardRanks.add((c.get(i).getRank()));
-//			c.get(i).setFaceUp (true);
-//			column[colNum].add (c.get(i));
-//			
-//			ArrayList<Card> cardsAtDeckBottom = new ArrayList<Card>();
-//			
-//			//next 5 cards leading to the top card
-//			while(deck.count()<=4)	{
-//			
-//				Card c = deck.get();
-
-				
-//				if(nextCard == null){
-//					while (!(cardsAtDeckBottom.isEmpty())){
-//						deck.add(cardsAtDeckBottom.remove(0));
-//					}
-//					nextCard = deck.get();
-//				}
-					
-//				boolean nextCardUsed = false;
-//				Integer tempRank = nextCard.getRank();
-//				if (!(cardRanks.contains(tempRank))){		
-//					c.add(nextCard);
-//					nextCardUsed = true;
-//					i+=1;
-//				 	c.get(i).setFaceUp (true);
-//					column[colNum].add (c.get(i));
-//				}
-//				else{
-//					cardsAtDeckBottom.add(0, nextCard);
-//				}
-//				if(nextCardUsed == false){
-//					
-//				}
 				
 // Reserve Cards
- 		//alternative could be, while deck is not empty, deal cards to reserve and then at last iteration, make card faceup
-						for (int i =0; i<3; i++)
-						{
-							Card cR = deck.get();
-							
-							cR.setFaceUp(false);
-							reserve.add (cR);
-						}
-						// this card is faceup initially
-						reserve.add (deck.get());
+		for (int i =0; i<3; i++){
+		
+			Card cR = deck.get();
+					
+			cR.setFaceUp(false);
+			reserve.add (cR);
+		}
+		// this card is faceup initially
+		reserve.add (deck.get());
 						
 					
 	}
