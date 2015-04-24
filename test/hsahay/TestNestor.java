@@ -25,15 +25,6 @@ public class TestNestor extends KSTestCase {
 		gw.dispose();
 	}
 	
-	public void testNestor(){
-		//testing board initialization
-		assertTrue(nestor.deck.empty());
-		for(int i=0; i<7; i++)
-		{
-			assertEquals(nestor.column[i].count(), 6);
-		}
-		assertEquals(nestor.reserve.count(), 4);
-	}
 	
 	public void testPairColumnsMove() {
 		

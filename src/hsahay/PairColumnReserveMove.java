@@ -53,7 +53,11 @@ public class PairColumnReserveMove extends Move {
 	public boolean undo(Solitaire game) {
 		
 		Card toCard = stack.get();
+		if(to.count()<4){
+			to.flipCard();
+		}
 		to.add(toCard);
+		
 		Card fromCard = stack.get();
 		from.add(fromCard);
 		game.updateScore(-2);

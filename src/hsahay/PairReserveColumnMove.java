@@ -44,8 +44,6 @@ public class PairReserveColumnMove extends Move {
 				from.flipCard();
 			}
 			
-			System.out.print(from.peek().toString());
-			
 			return true;
 		
 	}
@@ -56,7 +54,11 @@ public class PairReserveColumnMove extends Move {
 		Card toCard = stack.get();
 		to.add(toCard);
 		Card fromCard = stack.get();
+		if(from.count()<4){
+			from.flipCard();
+		}
 		from.add(fromCard);
+		
 		game.updateScore(-2);
 		return true;
 	}
